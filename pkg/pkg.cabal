@@ -1,0 +1,58 @@
+cabal-version: 2.2
+name: pkg
+version: 0.1.0.0
+
+
+common lang
+  default-language: Haskell2010
+  default-extensions: AllowAmbiguousTypes BangPatterns BinaryLiterals ConstraintKinds DataKinds DefaultSignatures DeriveAnyClass DeriveDataTypeable DeriveGeneric DeriveLift DerivingStrategies EmptyCase FlexibleContexts FlexibleInstances FunctionalDependencies GADTs GeneralizedNewtypeDeriving InstanceSigs LambdaCase MultiWayIf NamedFieldPuns NamedWildCards NegativeLiterals NumDecimals OverloadedLabels OverloadedStrings ParallelListComp PartialTypeSignatures PatternSynonyms PolyKinds RankNTypes RecordWildCards RecursiveDo RoleAnnotations ScopedTypeVariables StandaloneDeriving TupleSections TypeApplications TypeFamilyDependencies TypeOperators ViewPatterns ImpredicativeTypes UnboxedTuples UnboxedSums UnliftedFFITypes
+   --QuantifiedConstraints DerivingVia BlockArguments NumericUnderscores NoStarIsType
+
+library prelude
+  import: lang
+  hs-source-dirs: prelude
+  reexported-modules: Prelude
+  build-depends: base >= 4.11 && <4.12
+  default-extensions: NoImplicitPrelude
+
+common x
+  import: lang
+  build-depends: base-noprelude >=4.11 && <4.12, prelude
+
+common lib
+  import: x
+  --build-depends:
+
+library
+  import: lib
+  hs-source-dirs: src
+  --exposed-modules:
+
+common exe
+  import: x
+  build-depends: pkg
+
+executable my-exe
+  import: exe
+  main-is: Main.hs
+
+common test
+  import: x
+  build-depends: pkg
+               , tasty
+               , tasty-hunit
+               , tasty-hedgehog, hedgehog
+
+test-suite my-test
+  import: test
+  type: exitcode-stdio-1.0
+  main-is: Test.hs
+
+common bench
+  import: x
+  build-depends: pkg, criterion
+
+benchmark my-bench
+  import: bench
+  type: exitcode-stdio-1.0
+  main-is: Bench.hs

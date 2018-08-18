@@ -1,0 +1,39 @@
+packages: ./*/*.cabal
+
+verbose: 1
+jobs: $ncpus
+keep-going: True
+
+optimization: 1
+
+profiling: False
+-- profiling-detail: default | none | exported-functions | toplevel-functions | all-functions
+
+coverage: False
+
+documentation: False
+-- doc-index-file:
+haddock-hoogle: False
+haddock-html: True
+haddock-executables: False
+haddock-tests: False
+haddock-benchmarks: False
+haddock-internal: False
+-- haddock-hyperlink-source: True
+-- haddock-contents-location:
+
+
+static: False
+-- needed for ghci
+shared: True
+executable-dynamic: False
+
+package *
+  documentation: True
+--  haddock-html-location: http://hackage.haskell.org/packages/archive/$pkg/latest/doc/html
+  split-sections: True
+  debug-info: False
+  -- compiler: ghc
+  -- with-compiler: ghc-8.4.2
+  -- extra-include-dirs:
+  -- extra-lib-dirs:
